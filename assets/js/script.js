@@ -1,38 +1,43 @@
-// var buttonEl = document.querySelector("#save-task");
-// let formEl = document.querySelector("#task-form");
-// let tasksToDoEl = document.querySelector("#tasks-to-do");
+let formEl = document.querySelector("#task-form");
+let tasksToDoEl = document.querySelector("#tasks-to-do");
 
-// let createTaskHandler = function (event) {
-//   event.preventDefault();
-
-//   let listItemEl = document.createElement("li");
-//   listItemEl.className = "task-item";
-//   listItemEl.textContent = "This is a new task";
-//   tasksToDoEl.appendChild(listItemEl);
-// };
-
-// // buttonEl.addEventListener("click", createTaskHandler);
-// formEl.addEventListener("submit", createTaskHandler);
-
-// console.log(event);
-
-var formEl = document.querySelector("#task-form");
-console.log("🚀 ~ file: script.js ~ line 20 ~ formEl", formEl);
-var tasksToDoEl = document.querySelector("#tasks-to-do");
-console.log("🚀 ~ file: script.js ~ line 22 ~ tasksToDoEl", tasksToDoEl);
-
-var createTaskHandler = function (event) {
+let taskFormHandler = function (event) {
   event.preventDefault();
-  // event.preventDefault();
 
-  // var taskNameInput = document.querySelector("input[name='task-name']");
-  // console.log(taskNameInput);
+  let taskNameInput = document.querySelector("input[name='task-name']").value;
+  let taskTypeInput = document.querySelector("select[name='task-type']").value;
 
-  var listItemEl = document.createElement("li");
+  // package data into object
+  let taskDataObj = {
+    name: taskNameInput,
+    type: taskTypeInput,
+  };
+
+  createTaskEl(taskDataObj);
+};
+
+let createTaskEl = function (taskDataObj) {
+  // create the list item
+  let listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
-  listItemEl.textContent = "This is a new task.";
+
+  // create the div to hold info and add item
+  let taskInfoEl = document.createElement("div");
+
+  // attach name to div
+  taskInfoEl.className = "task-info";
+
+  // add content to div
+  taskInfoEl.innerHTML =
+    "<h3 class='task-name'>" +
+    taskDataObj.name +
+    "</h3><span class='task-type'>" +
+    taskDataObj.type +
+    "</span>";
+  listItemEl.appendChild(taskInfoEl);
+
+  // add item to list
   tasksToDoEl.appendChild(listItemEl);
 };
 
-formEl.addEventListener("submit", createTaskHandler);
-// formEl.addEventListener("submit", createTaskHandler);
+formEl.addEventListener("submit", taskFormHandler);
