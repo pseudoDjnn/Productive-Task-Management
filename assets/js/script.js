@@ -6,6 +6,8 @@ let tasksToDoEl = document.querySelector("#tasks-to-do");
 let tasksInProgressEl = document.querySelector("#tasks-in-progress");
 let tasksCompletedEl = document.querySelector("#tasks-completed");
 
+let tasks = [];
+
 let taskFormHandler = function (event) {
   event.preventDefault();
 
@@ -32,7 +34,10 @@ let taskFormHandler = function (event) {
     let taskDataObj = {
       name: taskNameInput,
       type: taskTypeInput,
+      status: "to do",
     };
+    console.log(taskDataObj);
+    console.log(taskDataObj.status);
     createTaskEl(taskDataObj);
   }
 };
@@ -49,6 +54,15 @@ let completeEditTask = function (taskName, taskType, taskId) {
   taskSelected.querySelector("h3.task-name").textContent = taskName;
   taskSelected.querySelector("span.task-type").textContent = taskType;
 
+  // debugger;
+  // loop through all tasks and task object with new content
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].name = taskName;
+      tasks[i].type = taskType;
+    }
+  }
+  // debugger;
   alert("Task Updated!");
 
   formEl.removeAttribute("data-task-id");
@@ -83,6 +97,9 @@ let createTaskEl = function (taskDataObj) {
   console.log(taskActionsEL);
 
   tasksToDoEl.appendChild(listItemEl);
+
+  taskDataObj.id = taskIdCounter;
+  tasks.push(taskDataObj);
 
   taskIdCounter++;
 };
@@ -147,6 +164,14 @@ let taskStatusChangeHandler = function (event) {
   } else if (statusValue === "completed") {
     tasksCompletedEl.appendChild(taskSelected);
   }
+
+  // updated tasks in task array
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].status = statusValue;
+    }
+  }
+  console.log(tasks);
 };
 
 let taskButtonHandler = function (event) {
@@ -194,6 +219,18 @@ let deleteTask = function (taskId) {
     ".task-item[data-task-id='" + taskId + "']"
   );
   taskSelected.remove();
+
+  // create new empty array
+  let updatedTaskArr = [];
+
+  // loop through tasks
+  for (let i = 0; i < tasks.length; i++) {
+    // if value is not a match then push to new array
+    if (tasks[i].id !== parseInt(taskId)) {
+      updatedTaskArr.push(tasks[i]);
+    }
+  }
+  tasks = updatedTaskArr;
 };
 
 formEl.addEventListener("submit", taskFormHandler);
