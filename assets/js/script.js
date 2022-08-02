@@ -62,6 +62,9 @@ let completeEditTask = function (taskName, taskType, taskId) {
       tasks[i].type = taskType;
     }
   }
+
+  saveTasks();
+
   // debugger;
   alert("Task Updated!");
 
@@ -100,6 +103,8 @@ let createTaskEl = function (taskDataObj) {
 
   taskDataObj.id = taskIdCounter;
   tasks.push(taskDataObj);
+
+  saveTasks();
 
   taskIdCounter++;
 };
@@ -172,6 +177,7 @@ let taskStatusChangeHandler = function (event) {
     }
   }
   console.log(tasks);
+  saveTasks();
 };
 
 let taskButtonHandler = function (event) {
@@ -231,6 +237,11 @@ let deleteTask = function (taskId) {
     }
   }
   tasks = updatedTaskArr;
+  saveTasks();
+};
+
+let saveTasks = function () {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 formEl.addEventListener("submit", taskFormHandler);
